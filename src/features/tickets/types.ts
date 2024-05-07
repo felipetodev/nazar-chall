@@ -13,4 +13,17 @@ export interface Ticket {
 
 export interface TicketsState {
   tickets: Ticket[]
+  filteredTickets: Ticket[]
+  filteredKeys: {
+    assignee: keyof Ticket['assignee'] | ''
+    type: keyof Ticket['type'] | ''
+    status: keyof Ticket['status'] | ''
+  }
+  sort: 'asc' | 'desc' | ''
+  users: {
+    name: string
+    avatar: string
+  }[]
 }
+
+export type TicketFilter = keyof Pick<Ticket, "assignee" | "status" | "type">
