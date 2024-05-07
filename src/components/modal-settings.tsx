@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Avatar } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import {
@@ -17,12 +18,39 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
+import { Ticket } from "@/features/tickets/types"
+import { useDispatch, useSelector } from "react-redux"
+import { TrashIcon } from "lucide-react"
+import { addNewTicket, removeTicket, updateTicket } from '@/features/tickets/ticketsSlice'
+import { toast } from "sonner"
+import { type RootState } from "@/app/store"
 
 type Props = {
+  variant: "settings"
+  ticket: Ticket
+  children: React.ReactNode
+} | {
+  variant: "create"
+  ticket?: undefined
   children: React.ReactNode
 }
 
-export function ModalSettings({ children }: Props) {
+const DEFAULT_NEW_TICKET = {
+  id: new Date().getTime(),
+  avatar: "",
+  assignee: "",
+  title: "",
+  description: "",
+  type: "",
+  status: "open",
+  priority: "",
+}
+
+export function ModalSettings({ variant, ticket: ticket_, children }: Props) {
+  const [ticket, setTicket] = useState(ticket_ || DEFAULT_NEW_TICKET)
+  const { users } = useSelector((state: RootState) => state.tickets)
+  const dispatch = useDispatch()
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -31,58 +59,84 @@ export function ModalSettings({ children }: Props) {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle className="mb-4">
-            Ticket Settings
+            {variant === "create" && "Create Ticket"}
+            {variant === "settings" && "Ticket Settings"}
           </AlertDialogTitle>
           <div className="flex flex-col gap-y-4">
-            <label htmlFor="assignee" className="text-xs">Assign To:</label>
+            <label htmlFor="assignee" className="ml-1 text-xs">Assign To:</label>
             <div className="flex items-center">
-              <Avatar src="" alt="Avatar 1" />
-              <Select>
-                <SelectTrigger id="assignee" className="ml-4 w-max" aria-label="Assign To">
-                  <SelectValue placeholder="Assign To" />
+              {(ticket.assignee && ticket.avatar) ? (
+                <Avatar src={ticket.avatar} alt={ticket.assignee} />
+              ) : (
+                <Avatar src="" alt="User" />
+              )}
+              <Select
+                defaultValue={ticket.assignee}
+                onValueChange={(assignee) => {
+                  setTicket({ ...ticket, assignee })
+                }}
+              >
+                <SelectTrigger id="assignee" className="ml-4 min-w-[150px] w-max" aria-label="Assign To">
+                  <SelectValue placeholder="Assign To:" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="name1">
-                    <div className="flex w-full justify-between mx-auto items-center space-x-2">
-                      <Avatar src="" alt="Avatar 1" className="size-6 border" />
-                      <span>
-                        Name 1
-                      </span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="name2">
-                    <div className="flex items-center space-x-2">
-                      <Avatar src="" alt="Avatar 1" className="size-6 border" />
-                      <span>
-                        Name 2
-                      </span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="name3">
-                    <div className="flex items-center space-x-2">
-                      <Avatar src="" alt="Avatar 1" className="size-6 border" />
-                      <span>
-                        Name 3
-                      </span>
-                    </div>
-                  </SelectItem>
+                <SelectContent className="!justify-start">
+                  {users.map((user) => (
+                    <SelectItem key={user.name} value={user.name}>
+                      {user.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
+              {variant === "create" && (
+                <div className="ml-4 w-full flex items-center max-w-[200px]">
+                  <Input
+                    placeholder="New user"
+                    value={ticket.assignee}
+                    onChange={({ target }) => {
+                      setTicket({ ...ticket, assignee: target.value })
+                    }}
+                  />
+                </div>
+              )}
             </div>
             <div>
-              <label htmlFor="title" className="text-xs mb-3">Ticket Title</label>
-              <Input id="title" placeholder="New ticket" />
+              <label htmlFor="title" className="ml-1 text-xs mb-3">
+                Ticket Title
+              </label>
+              <Input
+                value={ticket.title}
+                onChange={({ target }) => {
+                  setTicket({ ...ticket, title: target.value })
+                }}
+                id="title"
+                placeholder="New ticket"
+              />
             </div>
             <div>
-              <label htmlFor="description" className="text-xs mb-3">Ticket Description</label>
-              <Input autoComplete="off" id="description" placeholder="Ticket description" />
+              <label htmlFor="description" className="ml-1 text-xs mb-3">
+                Ticket Description
+              </label>
+              <Input
+                value={ticket.description}
+                onChange={({ target }) => {
+                  setTicket({ ...ticket, description: target.value })
+                }}
+                autoComplete="off"
+                id="description"
+                placeholder="Ticket description"
+              />
             </div>
             <div className="flex space-x-5">
               <div>
-                <label htmlFor="type" className="text-xs mb-3">
+                <label htmlFor="type" className="ml-1 text-xs mb-3">
                   Type:
                 </label>
-                <Select defaultValue="">
+                <Select
+                  defaultValue={ticket.type}
+                  onValueChange={(type: Ticket["type"]) => {
+                    setTicket({ ...ticket, type })
+                  }}
+                >
                   <SelectTrigger id="type" className="max-w-[120px]" aria-label="Ticket Type">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
@@ -96,17 +150,51 @@ export function ModalSettings({ children }: Props) {
                 </Select>
               </div>
               <div>
-                <label htmlFor="status" className="text-xs mb-3">
+                <label htmlFor="status" className="ml-1 text-xs mb-3">
                   Status:
                 </label>
-                <Select defaultValue="">
+                <Select
+                  defaultValue={ticket.status}
+                  onValueChange={(status: Ticket["status"]) => {
+                    setTicket({ ...ticket, status })
+                  }}
+                  {...variant === "settings" ? {
+                    disabled: ticket_.status !== "open"
+                  } : {}}
+                >
                   <SelectTrigger id="status" className="max-w-[120px]" aria-label="Ticket Status">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="open">Open</SelectItem>
-                    <SelectItem value="closed">Closed</SelectItem>
-                    <SelectItem value="in-progress">In Progress</SelectItem>
+                    <SelectItem value="open">
+                      Open
+                    </SelectItem>
+                    <SelectItem value="closed">
+                      Closed
+                    </SelectItem>
+                    <SelectItem value="in-progress">
+                      In Progress
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label htmlFor="priority" className="ml-1 text-xs mb-3">
+                  Priority:
+                </label>
+                <Select
+                  defaultValue={ticket.priority}
+                  onValueChange={(priority: Ticket["priority"]) => {
+                    setTicket({ ...ticket, priority })
+                  }}
+                >
+                  <SelectTrigger id="priority" className="max-w-[120px]" aria-label="Ticket Priority">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="low">Low</SelectItem>
+                    <SelectItem value="medium">Medium</SelectItem>
+                    <SelectItem value="high">High</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -114,8 +202,41 @@ export function ModalSettings({ children }: Props) {
           </div>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Save</AlertDialogAction>
+          {variant === "settings" && (
+            <AlertDialogCancel
+              onClick={() => {
+                dispatch(removeTicket(ticket as Ticket))
+              }}
+              className="bg-red-600 hover:bg-red-600/60 flex items-center mr-auto"
+            >
+              <TrashIcon className="size-4 mr-2" />
+              Delete Ticket
+            </AlertDialogCancel>
+          )}
+          <AlertDialogCancel>
+            Cancel
+          </AlertDialogCancel>
+          {variant === "create" && (
+            <AlertDialogAction
+              onClick={(e) => {
+                if (!ticket.assignee || !ticket.title || !ticket.description || !ticket.type || !ticket.status || !ticket.priority) {
+                  e.preventDefault()
+                  return toast.error("Please fill in all fields")
+                }
+                dispatch(addNewTicket(ticket as Ticket))
+                setTicket(DEFAULT_NEW_TICKET)
+              }}
+            >
+              Create Ticket
+            </AlertDialogAction>
+          )}
+          {variant === "settings" && (
+            <AlertDialogAction onClick={() => {
+              dispatch(updateTicket(ticket as Ticket))
+            }}>
+              Save Changes
+            </AlertDialogAction>
+          )}
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
