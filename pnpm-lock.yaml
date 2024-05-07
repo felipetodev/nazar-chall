@@ -19,6 +19,9 @@ dependencies:
     version: 9.1.2(@types/react@18.3.1)(react@18.3.1)(redux@5.0.1)
 
 devDependencies:
+  '@types/node':
+    specifier: ^20.12.10
+    version: 20.12.10
   '@types/react':
     specifier: ^18.2.66
     version: 18.3.1
@@ -48,7 +51,7 @@ devDependencies:
     version: 5.4.5
   vite:
     specifier: ^5.2.0
-    version: 5.2.11
+    version: 5.2.11(@types/node@20.12.10)
 
 packages:
 
@@ -617,6 +620,12 @@ packages:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
     dev: true
 
+  /@types/node@20.12.10:
+    resolution: {integrity: sha512-Eem5pH9pmWBHoGAT8Dr5fdc5rYA+4NAovdM4EktRPVAAiJhmWWfQrA0cFhAbOsQdSfIHjAud6YdkbL69+zSKjw==}
+    dependencies:
+      undici-types: 5.26.5
+    dev: true
+
   /@types/prop-types@15.7.12:
     resolution: {integrity: sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==}
 
@@ -782,7 +791,7 @@ packages:
       vite: ^4 || ^5
     dependencies:
       '@swc/core': 1.5.3
-      vite: 5.2.11
+      vite: 5.2.11(@types/node@20.12.10)
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -1646,6 +1655,10 @@ packages:
     hasBin: true
     dev: true
 
+  /undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+    dev: true
+
   /uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
     dependencies:
@@ -1660,7 +1673,7 @@ packages:
       react: 18.3.1
     dev: false
 
-  /vite@5.2.11:
+  /vite@5.2.11(@types/node@20.12.10):
     resolution: {integrity: sha512-HndV31LWW05i1BLPMUCE1B9E9GFbOu1MbenhS58FuK6owSO5qHm7GiCotrNY1YE5rMeQSFBGmT5ZaLEjFizgiQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -1688,6 +1701,7 @@ packages:
       terser:
         optional: true
     dependencies:
+      '@types/node': 20.12.10
       esbuild: 0.20.2
       postcss: 8.4.38
       rollup: 4.17.2
