@@ -12,9 +12,9 @@ const badgeVariants = cva(
           "border hover:bg-secondary/80",
         open:
           "border-transparent bg-yellow-500 text-secondary hover:bg-yellow-500/80",
-        closed:
-          "border-transparent bg-green-500 text-secondary hover:bg-green-500/80",
         "in-progress":
+          "border-transparent bg-green-500 text-secondary hover:bg-green-500/80",
+        closed:
           "border-transparent bg-red-600 text-foreground hover:bg-red-600/80",
       },
     },
