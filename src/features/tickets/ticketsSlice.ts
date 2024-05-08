@@ -44,7 +44,7 @@ export const ticketsSlice = createSlice({
       const { tickets } = state;
       const { payload } = action;
 
-      toast.success(`Ticket ${payload.id} has been removed!`)
+      toast.success(`Ticket ID: ${payload.id} has been removed!`)
 
       return {
         ...state,
