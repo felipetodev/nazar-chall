@@ -4,11 +4,11 @@ export function Header() {
   return (
     <header className="h-[80px] flex justify-between items-center border-b mb-4">
       <div className="flex items-center">
-        <HandshakeIcon className="w-8 h-8 text-primary mr-4" />
-        <h1 className="text-2xl font-semibold text-primary">Nazar Management Tool</h1>
+        <HandshakeIcon className="size-6 md:size-8 text-primary mr-4" />
+        <h1 className="text-xl md:text-2xl font-semibold text-primary">Nazar Management Tool</h1>
       </div>
       <a
-        className="ml-auto flex max-w-fit items-center justify-center space-x-2 font-semibold rounded-full border border-primary px-3 py-1.5 text-xs sm:text-sm transition-colors hover:bg-secondary/50"
+        className="ml-auto flex max-w-fit items-center justify-center space-x-2 font-semibold rounded-full border border-primary px-1.5 md:px-3 py-1.5 text-xs sm:text-sm transition-colors hover:bg-secondary/50"
         href="https://github.com/felipetodev/nazar-chall"
         target="_blank"
         rel="noopener noreferrer"
@@ -22,7 +22,7 @@ export function Header() {
         </svg>
 
         <span
-          className="inline-flex animate-text-gradient bg-gradient-to-r from-[#a8fdc1] via-[#78f983] to-[#c7fed5] bg-[200%_auto] bg-clip-text text-transparent"
+          className="hidden md:inline-flex animate-text-gradient bg-gradient-to-r from-[#a8fdc1] via-[#78f983] to-[#c7fed5] bg-[200%_auto] bg-clip-text text-transparent"
         >
           GitHub
         </span>
