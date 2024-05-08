@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table"
 import {
   ArrowDownUpIcon,
+  CheckCheckIcon,
   CircleXIcon,
   FolderIcon,
   MailOpenIcon,
@@ -100,6 +101,7 @@ export function FormTable() {
                 <Badge variant={ticket.status}>
                   {ticket.status === "open" && (<MailOpenIcon className="size-4 mr-1" />)}
                   {ticket.status === "closed" && (<CircleXIcon className="size-4 mr-1" />)}
+                  {ticket.status === "done" && (<CheckCheckIcon className="size-4 mr-1" />)}
                   {ticket.status === "in-progress" && (<ArrowDownUpIcon className="size-4 mr-1" />)}
                   {ticket.status}
                 </Badge>

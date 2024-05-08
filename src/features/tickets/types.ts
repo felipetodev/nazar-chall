@@ -4,7 +4,7 @@ export interface Ticket {
   avatar: string
   title: string
   description: string
-  status: 'open' | 'closed' | 'in-progress'
+  status: 'open' | 'closed' | 'in-progress' | 'done'
   type: 'technical' | 'general' | 'sales' | 'support' | 'other'
   priority: 'low' | 'medium' | 'high'
   createdAt: number

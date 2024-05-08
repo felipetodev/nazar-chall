@@ -72,6 +72,18 @@ export const INITIAL_STATE: Ticket[] = [
     priority: 'high',
     createdAt: Date.now() - 7000000,
     updatedAt: Date.now() - 2000000,
+  },
+  {
+    id: 7,
+    assignee: 'Patricio Vilches',
+    avatar: `/avatars/${String(Math.floor(Math.random() * 5) || 1).padStart(2, "0")}.png`,
+    title: 'Ticket 7',
+    description: 'This is ticket 7',
+    status: 'done',
+    type: 'sales',
+    priority: 'low',
+    createdAt: Date.now() - 6000000,
+    updatedAt: Date.now() - 1000000,
   }
 ] as const;
 
