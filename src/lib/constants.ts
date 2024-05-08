@@ -97,3 +97,12 @@ export const INITIAL_USERS = INITIAL_STATE.map((ticket) => ({
     }
     return acc
   }, [] as { name: string, avatar: string }[])
+
+export const tableHeaders: { key: keyof Ticket; label: string }[] = [
+  { key: "assignee", label: "User" },
+  { key: "title", label: "Ticket" },
+  { key: "status", label: "Status" },
+  { key: "priority", label: "Priority" },
+  { key: "createdAt", label: "Created" },
+  { key: "updatedAt", label: "Last Updated" },
+] as const;

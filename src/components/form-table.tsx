@@ -22,6 +22,8 @@ import { Avatar } from "@/components/ui/avatar"
 import TimeAgo from "@/lib/hooks/use-time-ago"
 import { FiltersSelectors } from "@/components/filters-selectors"
 import { useStore } from "@/lib/hooks/use-store"
+import { tableHeaders } from "@/lib/constants"
+import { cn } from "@/lib/utils"
 
 export function FormTable() {
   const { tickets, onHandleSort } = useStore()
@@ -32,36 +34,25 @@ export function FormTable() {
         <TableCaption>This list contains all the tickets</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead
-              className="cursor-pointer hover:underline hover:text-primary"
-              onClick={() => onHandleSort("assignee")}
-            >
-              User
-            </TableHead>
-            <TableHead>Ticket</TableHead>
-            <TableHead
-              className="cursor-pointer hover:underline hover:text-primary"
-              onClick={() => onHandleSort("status")}
-            >
-              Status
-            </TableHead>
-            <TableHead
-              className="cursor-pointer hover:underline hover:text-primary"
-              onClick={() => onHandleSort("priority")}
-            >
-              Priority
-            </TableHead>
-            <TableHead
-              className="cursor-pointer hover:underline hover:text-primary"
-              onClick={() => onHandleSort("createdAt")}
-            >
-              Created
-            </TableHead>
-            <TableHead
-              className="cursor-pointer hover:underline hover:text-primary"
-              onClick={() => onHandleSort("updatedAt")}>
-              Last Updated
-            </TableHead>
+            {tableHeaders.map((header) => {
+              const isSortable = ["assignee", "status", "priority", "createdAt", "updatedAt"]
+                .includes(header.key)
+              return (
+                <TableHead
+                  key={header.key}
+                  className={cn({
+                    "cursor-pointer hover:underline hover:text-primary": isSortable,
+                  })}
+                  onClick={() => {
+                    if (isSortable) {
+                      onHandleSort(header.key)
+                    }
+                  }}
+                >
+                  {header.label}
+                </TableHead>
+              )
+            })}
             <TableHead className="w-[100px]">Edit</TableHead>
           </TableRow>
         </TableHeader>
@@ -74,13 +65,16 @@ export function FormTable() {
                     src={ticket.avatar}
                     alt={ticket.assignee}
                   />
-                  <span>
+                  <span className="truncate">
                     {ticket.assignee}
                   </span>
                 </div>
               </TableCell>
               <TableCell className="space-y-1">
-                <div className="block items-base">
+                <div
+                  title={`${ticket.title} - ${ticket.description}`}
+                  className="block items-base w-full max-w-[50ch] truncate"
+                >
                   <span className="font-semibold">
                     {ticket.title}
                   </span>
@@ -124,7 +118,7 @@ export function FormTable() {
           ))}
           {tickets.length === 0 && (
             <TableRow>
-              <TableCell colSpan={7} className="text-center">
+              <TableCell colSpan={7} className="text-center font-semibold">
                 No tickets found
               </TableCell>
             </TableRow>
