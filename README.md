@@ -2,6 +2,10 @@
 
 Ticket management tool
 
+
+https://github.com/felipetodev/nazar-chall/assets/69825873/30ec3c7b-e7f9-40eb-8767-17bb35756d57
+
+
 ## 🚀 Run Locally
 
 1. Clone repository
