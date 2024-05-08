@@ -60,7 +60,7 @@ export function FormTable() {
           {tickets.map((ticket) => (
             <TableRow key={ticket.id}>
               <TableCell className="font-medium">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 max-w-40">
                   <Avatar
                     src={ticket.avatar}
                     alt={ticket.assignee}

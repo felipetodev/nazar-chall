@@ -54,7 +54,12 @@ export function ModalSettings({ variant, ticket: ticket_, children }: Props) {
   } = useStore()
 
   return (
-    <AlertDialog>
+    <AlertDialog
+      onOpenChange={open => {
+        if (variant === "create" && !open) setTicket(DEFAULT_NEW_TICKET)
+        if (variant === "settings" && !open) setTicket(ticket_)
+      }}
+    >
       <AlertDialogTrigger asChild>
         {children}
       </AlertDialogTrigger>
