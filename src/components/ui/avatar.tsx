@@ -27,8 +27,8 @@ function Avatar({ className, variant, ...props }: AvatarProps) {
 
   if (!props.src) {
     return (
-      <div className={cn(avatarVariants({ variant }), className, "flex items-center justify-center")}>
-        <ImageIcon className="size-4" />
+      <div className={cn(avatarVariants({ variant }), className, "flex size-10 px-2 items-center justify-center")}>
+        <ImageIcon  />
       </div>
     )
   }

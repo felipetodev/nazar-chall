@@ -90,9 +90,10 @@ export function ModalSettings({ variant, ticket: ticket_, children }: Props) {
                 </SelectContent>
               </Select>
               {variant === "create" && (
-                <div className="ml-4 w-full flex items-center max-w-[200px]">
+                <div className="w-full flex items-center">
+                  <span className="mx-4">or</span>
                   <Input
-                    placeholder="New user"
+                    placeholder="Type new user"
                     value={ticket.assignee}
                     onChange={({ target }) => {
                       setTicket({ ...ticket, assignee: target.value })
