@@ -112,6 +112,7 @@ export function FiltersSelectors() {
           <SelectItem value="open">Open</SelectItem>
           <SelectItem value="closed">Closed</SelectItem>
           <SelectItem value="in-progress">In Progress</SelectItem>
+          <SelectItem value="done">Done</SelectItem>
         </SelectContent>
       </Select>
 
