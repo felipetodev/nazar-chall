@@ -136,6 +136,9 @@ export function ModalSettings({ variant, ticket: ticket_, children }: Props) {
                   onValueChange={(type: Ticket["type"]) => {
                     setTicket({ ...ticket, type })
                   }}
+                  {...(variant === "settings") ? {
+                    disabled: ticket_.status === "done"
+                  } : {}}
                 >
                   <SelectTrigger id="type" className="max-w-[120px]" aria-label="Ticket Type">
                     <SelectValue placeholder="Select" />
@@ -175,6 +178,9 @@ export function ModalSettings({ variant, ticket: ticket_, children }: Props) {
                     <SelectItem value="in-progress">
                       In Progress
                     </SelectItem>
+                    <SelectItem value="done">
+                      Done
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -187,6 +193,9 @@ export function ModalSettings({ variant, ticket: ticket_, children }: Props) {
                   onValueChange={(priority: Ticket["priority"]) => {
                     setTicket({ ...ticket, priority })
                   }}
+                  {...(variant === "settings") ? {
+                    disabled: ticket_.status === "done"
+                  } : {}}
                 >
                   <SelectTrigger id="priority" className="max-w-[120px]" aria-label="Ticket Priority">
                     <SelectValue placeholder="Select" />
