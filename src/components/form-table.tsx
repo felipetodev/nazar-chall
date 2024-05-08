@@ -16,18 +16,15 @@ import {
   SettingsIcon
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import { useDispatch, useSelector } from "react-redux"
 import { Button } from "@/components/ui/button"
 import { ModalSettings } from "@/components/modal-settings"
 import { Avatar } from "@/components/ui/avatar"
 import TimeAgo from "@/lib/hooks/use-time-ago"
-import { handleSort } from '@/features/tickets/ticketsSlice'
 import { FiltersSelectors } from "@/components/filters-selectors"
-import { type RootState } from '@/app/store'
+import { useStore } from "@/lib/hooks/use-store"
 
 export function FormTable() {
-  const { filteredTickets: tickets } = useSelector((state: RootState) => state.tickets)
-  const dispatch = useDispatch()
+  const { tickets, onHandleSort } = useStore()
   return (
     <>
       <FiltersSelectors />
@@ -37,32 +34,32 @@ export function FormTable() {
           <TableRow>
             <TableHead
               className="cursor-pointer hover:underline hover:text-primary"
-              onClick={() => dispatch(handleSort("assignee"))}
+              onClick={() => onHandleSort("assignee")}
             >
               User
             </TableHead>
             <TableHead>Ticket</TableHead>
             <TableHead
               className="cursor-pointer hover:underline hover:text-primary"
-              onClick={() => dispatch(handleSort("status"))}
+              onClick={() => onHandleSort("status")}
             >
               Status
             </TableHead>
             <TableHead
               className="cursor-pointer hover:underline hover:text-primary"
-              onClick={() => dispatch(handleSort("priority"))}
+              onClick={() => onHandleSort("priority")}
             >
               Priority
             </TableHead>
             <TableHead
               className="cursor-pointer hover:underline hover:text-primary"
-              onClick={() => dispatch(handleSort("createdAt"))}
+              onClick={() => onHandleSort("createdAt")}
             >
               Created
             </TableHead>
             <TableHead
               className="cursor-pointer hover:underline hover:text-primary"
-              onClick={() => dispatch(handleSort("updatedAt"))}>
+              onClick={() => onHandleSort("updatedAt")}>
               Last Updated
             </TableHead>
             <TableHead className="w-[100px]">Edit</TableHead>
@@ -133,7 +130,7 @@ export function FormTable() {
             </TableRow>
           )}
         </TableBody>
-      </Table>
+      </Table >
     </>
   )
 }

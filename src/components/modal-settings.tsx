@@ -18,12 +18,10 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import { Ticket } from "@/features/tickets/types"
-import { useDispatch, useSelector } from "react-redux"
 import { TrashIcon } from "lucide-react"
-import { addNewTicket, removeTicket, updateTicket } from '@/features/tickets/ticketsSlice'
+import { useStore } from "@/lib/hooks/use-store"
 import { toast } from "sonner"
-import { type RootState } from "@/app/store"
+import { type Ticket } from "@/features/tickets/types"
 
 type Props = {
   variant: "settings"
@@ -48,8 +46,12 @@ const DEFAULT_NEW_TICKET = {
 
 export function ModalSettings({ variant, ticket: ticket_, children }: Props) {
   const [ticket, setTicket] = useState(ticket_ || DEFAULT_NEW_TICKET)
-  const { users } = useSelector((state: RootState) => state.tickets)
-  const dispatch = useDispatch()
+  const {
+    users,
+    onAddNewTicket,
+    onRemoveTicket,
+    onUpdateTicket
+  } = useStore()
 
   return (
     <AlertDialog>
@@ -214,7 +216,7 @@ export function ModalSettings({ variant, ticket: ticket_, children }: Props) {
           {variant === "settings" && (
             <AlertDialogCancel
               onClick={() => {
-                dispatch(removeTicket(ticket as Ticket))
+                onRemoveTicket(ticket as Ticket)
               }}
               className="bg-red-600 hover:bg-red-600/60 flex items-center mr-auto"
             >
@@ -228,11 +230,12 @@ export function ModalSettings({ variant, ticket: ticket_, children }: Props) {
           {variant === "create" && (
             <AlertDialogAction
               onClick={(e) => {
+                // add zod validation
                 if (!ticket.assignee || !ticket.title || !ticket.description || !ticket.type || !ticket.status || !ticket.priority) {
                   e.preventDefault()
                   return toast.error("Please fill in all fields")
                 }
-                dispatch(addNewTicket(ticket as Ticket))
+                onAddNewTicket(ticket as Ticket)
                 setTicket(DEFAULT_NEW_TICKET)
               }}
             >
@@ -240,9 +243,11 @@ export function ModalSettings({ variant, ticket: ticket_, children }: Props) {
             </AlertDialogAction>
           )}
           {variant === "settings" && (
-            <AlertDialogAction onClick={() => {
-              dispatch(updateTicket(ticket as Ticket))
-            }}>
+            <AlertDialogAction
+              onClick={() => {
+                onUpdateTicket(ticket as Ticket)
+              }}
+            >
               Save Changes
             </AlertDialogAction>
           )}

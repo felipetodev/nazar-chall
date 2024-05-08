@@ -6,23 +6,24 @@ import {
   SelectValue
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { useDispatch, useSelector } from "react-redux"
-import { handleFilter, removeFilter, resetFilters } from '@/features/tickets/ticketsSlice'
 import { ModalSettings } from "@/components/modal-settings"
 import { CirclePlusIcon, CircleXIcon } from "lucide-react"
-import { type RootState } from "@/app/store"
+import { useStore } from "@/lib/hooks/use-store"
 
 export function FiltersSelectors() {
-  const { users, filteredKeys } = useSelector((state: RootState) => state.tickets)
-  const dispatch = useDispatch()
+  const {
+    users,
+    filteredKeys,
+    onHandleFilter,
+    onRemoveFilter,
+    onResetFilters
+  } = useStore()
 
   return (
     <div className="flex items-centers space-x-4 py-4">
       <Select
         value={filteredKeys.assignee as string}
-        onValueChange={value => {
-          dispatch(handleFilter({ key: 'assignee', value }))
-        }}
+        onValueChange={value => onHandleFilter({ key: 'assignee', value })}
       >
         <div className="relative h-max w-max">
           <SelectTrigger id="users" className="w-max !justify-start" aria-label="User Selector">
@@ -34,9 +35,7 @@ export function FiltersSelectors() {
           {filteredKeys.assignee && (
             <button
               className="group absolute flex items-center px-1 top-0 right-8 h-full justify-center"
-              onClick={() => {
-                dispatch(removeFilter("assignee"))
-              }}
+              onClick={() => onRemoveFilter("assignee")}
             >
               <CircleXIcon className="text-primary size-4 group-hover:text-primary/70" />
             </button>
@@ -53,9 +52,7 @@ export function FiltersSelectors() {
 
       <Select
         value={filteredKeys.type as string}
-        onValueChange={value => {
-          dispatch(handleFilter({ key: 'type', value }))
-        }}
+        onValueChange={value => onHandleFilter({ key: 'type', value })}
       >
         <div className="relative h-max w-max">
           <SelectTrigger id="type" className="w-max" aria-label="Ticket Type">
@@ -67,9 +64,7 @@ export function FiltersSelectors() {
           {filteredKeys.type && (
             <button
               className="group absolute flex items-center px-1 top-0 right-8 h-full justify-center"
-              onClick={() => {
-                dispatch(removeFilter("type"))
-              }}
+              onClick={() => onRemoveFilter("type")}
             >
               <CircleXIcon className="text-primary size-4 group-hover:text-primary/70" />
             </button>
@@ -86,9 +81,7 @@ export function FiltersSelectors() {
 
       <Select
         value={filteredKeys.status as string}
-        onValueChange={value => {
-          dispatch(handleFilter({ key: 'status', value }))
-        }}
+        onValueChange={value => onHandleFilter({ key: 'status', value })}
       >
         <div className="relative h-max w-max">
           <SelectTrigger id="status" className="w-max" aria-label="Ticket Status">
@@ -100,9 +93,7 @@ export function FiltersSelectors() {
           {filteredKeys.status && (
             <button
               className="group absolute flex items-center px-1 top-0 right-8 h-full justify-center"
-              onClick={() => {
-                dispatch(removeFilter("status"))
-              }}
+              onClick={() => onRemoveFilter("status")}
             >
               <CircleXIcon className="text-primary size-4 group-hover:text-primary/70" />
             </button>
@@ -116,7 +107,7 @@ export function FiltersSelectors() {
         </SelectContent>
       </Select>
 
-      <Button onClick={() => dispatch(resetFilters())}>
+      <Button onClick={() => onResetFilters()}>
         Clear all filters
       </Button>
 

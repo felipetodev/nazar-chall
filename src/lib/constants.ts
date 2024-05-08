@@ -1,4 +1,4 @@
-import { Ticket } from "@/features/tickets/types";
+import { type Ticket } from "@/features/tickets/types";
 
 export const INITIAL_STATE: Ticket[] = [
   {
@@ -91,9 +91,9 @@ export const INITIAL_USERS = INITIAL_STATE.map((ticket) => ({
   name: ticket.assignee,
   avatar: ticket.avatar
 }))
-.reduce((acc, user) => {
-  if (!acc.find((u) => u.name === user.name)) {
-    acc.push(user)
-  }
-  return acc
-}, [] as { name: string, avatar: string }[])
+  .reduce((acc, user) => {
+    if (!acc.find((u) => u.name === user.name)) {
+      acc.push(user)
+    }
+    return acc
+  }, [] as { name: string, avatar: string }[])
